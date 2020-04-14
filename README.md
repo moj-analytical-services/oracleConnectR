@@ -17,7 +17,9 @@ install.packages("ROracle")
 install.packages("config")
 ```
 
-The easiest way to install the package is to install directly from Github; to do this you will also require the `devtools` package to be installed. A method which does not require `devtools` is set out at the end.
+~~The easiest way to install the package is to install directly from Github; to do this you will also require the `devtools` package to be installed. A method which does not require `devtools` is set out at the end.~~
+
+Installation through devtools needs ironing out; for now follow the alternative install method set out at the end.
 
 ``` r
 install.packages("devtools")
