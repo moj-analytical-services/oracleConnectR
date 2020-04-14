@@ -1,0 +1,18 @@
+Package: oracleConnectR
+Title: Wrapper Package for Simple Connection to Oracle Databases
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Owen",
+           family = "Daniel",
+           role = c("aut", "cre"),
+           email = "owen.daniel@justice.gov.uk")
+Description: Provides a simple interface to easily connect to Oracle databases using an externally stored lookup of database credentials.
+License: CC0
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    config
+RoxygenNote: 6.1.1
+Depends: 
+    DBI,
+    ROracle
