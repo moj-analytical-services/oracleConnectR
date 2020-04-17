@@ -84,7 +84,7 @@ list_connections("<path-to-config-yml>")
 Both examples above explicitly stated the path where the `.yml` file is saved; alternatively this can be specified in an environment variable, eg. by adding the line
 
 ```r
-cred-path=<path-to-config-yml>
+config-path=<path-to-config-yml>
 ```
 to a `.Renviron` file within your project directory. You can now list connections, and create connections without publically specifying your file path
 
