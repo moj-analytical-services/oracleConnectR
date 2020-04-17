@@ -17,7 +17,7 @@ install.packages("ROracle")
 install.packages("config")
 ```
 
-*Installation via `devtools` currently has teathing problems! Ideally in the future the following will work*
+The easiest way to install is by using the `devtools` package:
 
 ``` r
 install.packages("devtools")
@@ -26,15 +26,7 @@ library(devtools)
 devtools::install_github("moj-analytical-services/oracleConnectR", INSTALL_opts=c("--no-multiarch"))
 ```
 
-Without devtools, to install the package you will need to first acquire a local copy of this repo and thenbuild the package from within Rstudio.
-
-Downloading the package directly from GitHub is currently not an option as the `.zip` file will not pass the virus scanner. Instead, you will need to clone the repository.
-
-Instructions on cloning from GitHub are provided [here](https://github.com/moj-analytical-services/git2r-demo), which you will need to follow up to step 5.
-
-In a new Rstudio session, navigate to the location where you have saved the repository, and open the Rstudio project.
-
-You can now locally build the package by pressing `CTRL + SHIFT + B`.
+Instructions of how to install without devtools are detailed at the end.
 
 ## Setup
 
@@ -92,3 +84,12 @@ to a `.Renviron` file within your project directory. You can now list connection
 list_connections()
 con <- create_connection("<database_name>")
 ```
+
+## Install without `devtools`
+Alternatively to installing with `devtools`, you can make a local copy of this repository and build the package locally.
+
+On Dom1 laptops, downloading directly from GitHub is not possible - so you will need to clone the repository. Instructions on cloning from GitHub are provided [here](https://github.com/moj-analytical-services/git2r-demo); you will need to follow up to step 5.
+
+In a new Rstudio session, navigate to the location where you have saved the repository, and open the Rstudio project.
+
+You can now locally build the package by pressing `CTRL + SHIFT + B`.
