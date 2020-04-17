@@ -23,7 +23,7 @@ install.packages("config")
 install.packages("devtools")
 library(devtools)
 
-devtools::install_github("moj-analytical-services/oracleConnectR")
+devtools::install_github("moj-analytical-services/oracleConnectR", INSTALL_opts=c("--no-multiarch"))
 ```
 
 Without devtools, to install the package you will need to first acquire a local copy of this repo and thenbuild the package from within Rstudio.
