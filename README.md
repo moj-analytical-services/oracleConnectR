@@ -3,12 +3,15 @@
 A minimal package to simplify connecting to Oracle databases from R
 ```r
 library(oracleConnectR)
+
+# connect to your database, query and disconnect all in one go
+dat <- considerate_qry(con = "my-database", qry = "my-query")
+
+# or create a database connection for running many queries against
 con <- create_connection("my-database")
 ```
 
 ## Installation
-
-To be able to install the package you will need to be a member of the Github organization moj-analytical-services (if you are reading this, chances are you are a member - or you are looking over the shoulder of a member). 
 
 The package has a number of critical dependencies which you will want to ensure are correctly installed first.
 ```r
@@ -57,7 +60,15 @@ Having filled in your database details you should save this file somewhere memor
 
 ## Example
 
-Creating a database connection can now be completed in one line, as set out at the top, after which you can use any commands you may already be familiar with to query a database, for instance retrieving a list of all of the available tables.
+You can now connect to a database, query from it and close the connection in one function call - this is considered considerate as it ensures you do not leave the database connection open, potentially impacting other users ability to run queries.
+
+```r
+library(oracleConnectR)
+
+dat <- considerate_qry("<database_name>", "<query>", "<path-to-config-yml")
+```
+
+Alternatively if you want more flexibility, you can create the connection and then use functions you may already be familiar with to explore and query a database, for instance retrieving a list of all of the available tables.
 
 ```r
 library(oracleConnectR)
