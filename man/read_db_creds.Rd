@@ -4,8 +4,7 @@
 \alias{read_db_creds}
 \title{Read .yml configuration file}
 \usage{
-read_db_creds(db_name = NULL, config_path = NULL,
-  check_type = "warning")
+read_db_creds(db_name = NULL, config_path = NULL, check_type = "warning")
 }
 \arguments{
 \item{config_path}{A character string specifying the file path for the .yml
