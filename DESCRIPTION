@@ -1,6 +1,6 @@
 Package: oracleConnectR
 Title: Wrapper Package for Simple Connection to Oracle Databases
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person(given = "Owen",
            family = "Daniel",
@@ -12,7 +12,7 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     config
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Depends: 
     DBI,
     ROracle
