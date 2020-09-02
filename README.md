@@ -16,9 +16,10 @@ con <- create_connection("my-database")
 The package has a number of critical dependencies which you will want to ensure are correctly installed first.
 ```r
 install.packages("DBI")
-install.packages("ROracle")
 install.packages("config")
 ```
+
+In addition a database driver package is required: currently [`odbc`](https://db.rstudio.com/odbc/) and [`ROracle`](https://www.oracle.com/database/technologies/roracle-downloads.html) are supported.
 
 The easiest way to install is by using the `devtools` package:
 
@@ -75,7 +76,7 @@ library(oracleConnectR)
 
 con <- create_connection("<database_name>", "<path-to-config-yml")
 
-ROracle::dbListTables(con)
+DBI::dbListTables(con)
 ```
 
 To view a list of all of the database names available you can call
@@ -95,6 +96,16 @@ to a `.Renviron` file within your project directory. You can now list connection
 list_connections()
 con <- create_connection("<database_name>")
 ```
+
+## Driver Options
+`oracleConnectR` requires one of `odbc` or `ROracle` to be installed. If only one of the drivers is installed `oracleConnectR` will identify this and use the available driver.
+
+If both are available, the package willd default to using `odbc`: whilst this appears not to be as fast as `ROracle` it is understood to behave more consistently across users. To override the default, the driver can be specified as:
+
+```r
+con <- create_connection("<database_name>", driver = "ROracle")
+```
+
 
 ## Install without `devtools`
 Alternatively to installing with `devtools`, you can make a local copy of this repository and build the package locally.

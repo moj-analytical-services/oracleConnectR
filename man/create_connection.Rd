@@ -4,16 +4,19 @@
 \alias{create_connection}
 \title{Create an Oracle database connection}
 \usage{
-create_connection(db_name, config_path = NULL)
+create_connection(db_name, config_path = NULL, driver = NULL)
 }
 \arguments{
 \item{db_name}{A character string specifying the name of the database}
 
 \item{config_path}{A character string specifying the file path for the .yml
 file containing database credentials (optional)}
+
+\item{driver}{A character string specifying the driver package. Currently supports
+options "ROracle" or "odbc". If left NULL it will first prioritise odbc over ROracle}
 }
 \value{
-A ROracle dbconnect object.
+A dbconnect object.
 }
 \description{
 Create an Oracle database connection
