@@ -20,7 +20,6 @@ read_db_creds <- function(db_name = NULL, config_path = NULL, check_type = "warn
 }
 
 
-
 #' Read config-path from system environment, and return a descriptive error if not found.
 #'
 #' @return A character string
@@ -30,8 +29,9 @@ get_config_path <- function(){
   config_path <- Sys.getenv("config-path")
 
   if(config_path == "")
-    stop("No config_path variable set; either define using config_path argument,
-           or declare an environment variable `config-path`.")
+    stop("No config_path variable set. oracleConnectR requires you to specify the
+    path to a .yml config file containing your database credential details. See:
+    https://github.com/moj-analytical-services/oracleConnectR#setup")
 
   return(config_path)
 }
