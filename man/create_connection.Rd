@@ -12,8 +12,8 @@ create_connection(db_name, config_path = NULL, driver = NULL)
 \item{config_path}{A character string specifying the file path for the .yml
 file containing database credentials (optional)}
 
-\item{driver}{A character string specifying the driver package. Currently supports
-options "ROracle" or "odbc". If left NULL it will first prioritise odbc over ROracle}
+\item{driver}{Optional character string specifying the database driver to use (currently
+supports 'odbc' (default) or 'ROracle'.}
 }
 \value{
 A dbconnect object.

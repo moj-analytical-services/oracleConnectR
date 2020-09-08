@@ -4,7 +4,14 @@
 \alias{considerate_qry}
 \title{Considerately run a SQL query, closing the database connection on completion.}
 \usage{
-considerate_qry(db_name, qry = NULL, qry_path = NULL, config_path = NULL, ...)
+considerate_qry(
+  db_name,
+  qry = NULL,
+  qry_path = NULL,
+  config_path = NULL,
+  driver = NULL,
+  ...
+)
 }
 \arguments{
 \item{db_name}{A list containing database credentials}
@@ -12,6 +19,12 @@ considerate_qry(db_name, qry = NULL, qry_path = NULL, config_path = NULL, ...)
 \item{qry}{A character string containing a SQL query}
 
 \item{qry_path}{A character string containing a path to a .sql file}
+
+\item{config_path}{Optional character string with the location to the config
+file with database connection details}
+
+\item{driver}{Optional character string specifying the database driver to use (currently
+supports 'odbc' (default) or 'ROracle'.}
 
 \item{...}{Optional arguments to be passed to write.csv}
 }

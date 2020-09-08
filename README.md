@@ -59,51 +59,62 @@ default:
 
 Having filled in your database details you should save this file somewhere memorable; the name does not matter but should end with the file type `.yml`.
 
+
+### Implicit Referencing (Optional - but recommended)
+Adding the location that you have saved the `.yml` file as a variable in `.Renviron` will enable the package to connect to databases without you needing to explicitly reference the location that you have saved your credential file.
+
+To set this up: from within the R terminal calling `usethis::edit_r_environ()` will open your global `.Renviron` file. Add the line:
+
+```
+config-path="<path-to-config-yml>"
+```
+
 ## Example
 
-You can now connect to a database, query from it and close the connection in one function call - this is considered considerate as it ensures you do not leave the database connection open, potentially impacting other users ability to run queries.
-
-```r
-library(oracleConnectR)
-
-dat <- considerate_qry("<database_name>", "<query>", "<path-to-config-yml")
-```
-
-Alternatively if you want more flexibility, you can create the connection and then use functions you may already be familiar with to explore and query a database, for instance retrieving a list of all of the available tables.
-
-```r
-library(oracleConnectR)
-
-con <- create_connection("<database_name>", "<path-to-config-yml")
-
-DBI::dbListTables(con)
-```
-
-To view a list of all of the database names available you can call
+### Viewing Connections
+To view a list of all of the database names available (eg. those you have defined in the .yml file) you can call:
 
 ```r
 list_connections("<path-to-config-yml>")
 ```
 
-Both examples above explicitly stated the path where the `.yml` file is saved; alternatively this can be specified in an environment variable, eg. by adding the line
+If you set-up implicit referencing then there is no need to provide the argument, and running `list_connections()` will return the same output.
 
-```
-config-path=<path-to-config-yml>
-```
-to a `.Renviron` file within your project directory. You can now list connections, and create connections without publically specifying your file path
+### Running a Query
+You can now connect to a database, query from it and close the connection in one function call - this is considerate as it ensures you do not leave the database connection open, potentially impacting other users ability to run queries.
 
 ```r
-list_connections()
-con <- create_connection("<database_name>")
+library(oracleConnectR)
+
+dat <- considerate_qry("<database_name>", "<query>", "<path-to-config-yml>")
 ```
+
+Again, using implicit querying you can run:
+```r
+library(oracleConnectR)
+
+dat <- considerate_qry("<database_name>", "<query>")
+```
+
+### Wider Database Interaction
+If you want more flexibility than running a single query (eg. you want to view all of the tables in the database, or want to write back to the server) you can create the connection and then use functions from the DBI package, etc.
+
+```r
+library(oracleConnectR)
+
+con <- create_connection("<database_name>") # assumes implicit referencing
+
+DBI::dbListTables(con)
+```
+
 
 ## Driver Options
-`oracleConnectR` requires one of `odbc` or `ROracle` to be installed. If only one of the drivers is installed `oracleConnectR` will identify this and use the available driver.
+`oracleConnectR` requires one of `odbc` or `ROracle` to be installed. The default behaviour when calling `create_connection` or `considerate_qry` is for the package to try and connect using ROracle, and failing that to attempt using odbc.
 
-If both are available, the package willd default to using `odbc`: whilst this appears not to be as fast as `ROracle` it is understood to behave more consistently across users. To override the default, the driver can be specified as:
+To over-ride this default the driver can be specified when calling these functions, eg.
 
 ```r
-con <- create_connection("<database_name>", driver = "ROracle")
+con <- create_connection("<database_name>", driver = "odbc")
 ```
 
 
