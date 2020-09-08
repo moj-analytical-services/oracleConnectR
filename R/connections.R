@@ -4,56 +4,87 @@
 #' @param db_name A character string specifying the name of the database
 #' @param config_path A character string specifying the file path for the .yml
 #' file containing database credentials (optional)
-#' @param driver A character string specifying the driver package. Currently supports
-#' options "ROracle" or "odbc". If left NULL it will first prioritise odbc over ROracle
+#' @param driver Optional character string specifying the database driver to use (currently
+#' supports 'odbc' (default) or 'ROracle'.
 #'
 #' @return A dbconnect object.
 #' @export
 #'
 create_connection <- function(db_name, config_path = NULL, driver = NULL){
 
+  if(is.null(driver)){
+    # first try with ROracle
+    con <- try(create_ROracle_connection(db_name, config_path), silent = TRUE)
+
+    # failing that, try with odbc
+    if(class(con) == "try-error"){
+      message("No driver argument provided to create_connection:
+      Attempt to use ROracle failed, trying odbc instead")
+
+      con <- create_odbc_connection(db_name, config_path)
+    }
+  }
+  else if(driver == "odbc"){
+      con <- create_odbc_connection(db_name, config_path)
+  }
+  else if(driver == "ROracle"){
+      con <- create_ROracle_connection(db_name, config_path)
+  }
+
+  else {
+    stop("driver must be one of NULL, 'Roracle' or 'odbc'.")
+  }
+
+  return(con)
+}
+
+#' Create an Oracle database connection using ROracle
+#'
+#' @param db_name A character string specifying the name of the database
+#' @param config_path A character string specifying the file path for the .yml
+#' file containing database credentials (optional)
+#'
+#' @return A dbconnect object.
+#'
+create_ROracle_connection <- function(db_name, config_path = NULL){
+
   # get database credentials from config store
   db_cred <- read_db_creds(db_name, config_path, check_type = "stop")
   db_cred <- db_cred[[1]]
 
-  # test that driver specifies an appropriate value
-  if(!is.null(driver) && !(driver %in% c("ROracle", "odbc"))){
-    stop("driver must be one of NULL, 'Roracle' or 'odbc'.")
-  }
+  db_name <- sprintf(
+    "(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=%s)(PORT=%s))(CONNECT_DATA=(SID=%s)))",
+    db_cred$host, db_cred$port, db_cred$sid
+  )
 
-  # if driver is left as NULL identify the driver to use
-  if(is.null(driver)){
-    # prioritise odbc
-    if("odbc" %in% installed.packages()){driver <- "odbc"}
+  drv <- DBI::dbDriver("Oracle")
 
-    # else use ROracle
-    else if("ROracle" %in% installed.packages()){driver <- "ROracle"}
+  con <- ROracle::dbConnect(drv, db_cred$username, db_cred$password, db_name)
 
-    # otherwise return an error
-    else{ stop("No supported database driver found: one of ROracle or odbc must be installed")}
-  }
+  return(con)
+}
 
-  # create the connection with the appropriate driver API
-  if(driver == "ROracle"){
-    db_name <- sprintf(
-      "(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=%s)(PORT=%s))(CONNECT_DATA=(SID=%s)))",
-      db_cred$host, db_cred$port, db_cred$sid
-    )
+#' Create an Oracle database connection using odbc
+#'
+#' @param db_name A character string specifying the name of the database
+#' @param config_path A character string specifying the file path for the .yml
+#' file containing database credentials (optional)
+#'
+#' @return A dbconnect object.
+#'
+create_odbc_connection <- function(db_name, config_path = NULL){
 
-    drv <- DBI::dbDriver("Oracle")
+  # get database credentials from config store
+  db_cred <- read_db_creds(db_name, config_path, check_type = "stop")
+  db_cred <- db_cred[[1]]
 
-    con <- ROracle::dbConnect(drv, db_cred$username, db_cred$password, db_name)
-  }
-  else if(driver == "odbc"){
-
-    con <- DBI::dbConnect(
+  con <- DBI::dbConnect(
       odbc::odbc(),
       db_cred$username,
       pwd  = db_cred$password,
       host = db_cred$host,
       port = db_cred$port
     )
-  }
 
   return(con)
 }
