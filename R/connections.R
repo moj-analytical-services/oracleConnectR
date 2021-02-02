@@ -14,12 +14,12 @@ create_connection <- function(db_name, config_path = NULL, driver = NULL){
 
   if(is.null(driver)){
     # first try with ROracle
-    con <- try(create_ROracle_connection(db_name, config_path), silent = TRUE)
-
-    # failing that, try with odbc
-    if(class(con) == "try-error"){
+    if((requireNamespace("ROracle", quietly = TRUE) == TRUE)){
+      con <- create_ROracle_connection(db_name, config_path)
+    }
+    else{
       message("No driver argument provided to create_connection:
-      Attempt to use ROracle failed, trying odbc instead")
+              ROracle not installed, trying odbc instead")
 
       con <- create_odbc_connection(db_name, config_path)
     }
@@ -48,10 +48,8 @@ create_connection <- function(db_name, config_path = NULL, driver = NULL){
 #'
 create_ROracle_connection <- function(db_name, config_path = NULL){
 
-  # Load ROracle library if already installed
-  if("ROracle" %in% rownames(installed.packages()) == TRUE){
-    library("ROracle")
-  }
+  # Load ROracle library
+  loadNamespace("ROracle")
 
   # get database credentials from config store
   db_cred <- read_db_creds(db_name, config_path, check_type = "stop")
