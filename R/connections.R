@@ -48,6 +48,11 @@ create_connection <- function(db_name, config_path = NULL, driver = NULL){
 #'
 create_ROracle_connection <- function(db_name, config_path = NULL){
 
+  # Load ROracle library if already installed
+  if("ROracle" %in% rownames(installed.packages()) == TRUE){
+    library("ROracle")
+  }
+
   # get database credentials from config store
   db_cred <- read_db_creds(db_name, config_path, check_type = "stop")
   db_cred <- db_cred[[1]]
