@@ -10,9 +10,9 @@ Description: Provides a simple interface to easily connect to Oracle databases u
 License: CC0
 Encoding: UTF-8
 LazyData: true
+Depends: DBI
 Imports: 
     config,
-    DBI,
     odbc
 Suggests:
     ROracle
